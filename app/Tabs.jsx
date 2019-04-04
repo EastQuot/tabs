@@ -9,11 +9,9 @@ class Tabs extends React.Component {
       style: {}
     }
 
-    this.handleChange = (item) => {
-      const { place } = this.props;
-      const elem = event.target;
+    this.handleChange = (elem, item) =>  {
+      const { place, handleChange } = this.props;
       const clientRect = elem.getBoundingClientRect();
-      
       Object.defineProperty(clientRect, "bottom", {
         value: clientRect.top + elem.clientHeight,
         writable: true
@@ -26,8 +24,12 @@ class Tabs extends React.Component {
            top: clientRect[place]
           } 
         })
-      const { handleChange } = this.props;
-        handleChange(item)
+        item && handleChange(item)
+    }
+
+    this.handleClick = (item) => {
+      const elem = event.target;
+     this.handleChange(elem , item);
     }
   }
 
@@ -36,11 +38,14 @@ class Tabs extends React.Component {
     let {  className } = this.props;
     className = [...className];
     active === item && className.push('active');
+    let ref;
+    if (active === item) ref = active;
     return (
       <div
+        ref={ref}
         key={item}
         className={className.join(' ')}
-        onClick={this.handleChange.bind(this, item)}
+        onClick={this.handleClick.bind(this, item)}
       >
         {item}
       </div>
@@ -48,7 +53,10 @@ class Tabs extends React.Component {
   }
 
   componentDidMount(){
-    // this.handleChange()
+    const { active } = this.props;
+    let elem = this.refs[active];
+    this.handleChange(elem)
+
   }
   
   render() {

@@ -9,7 +9,7 @@ class App extends React.Component {
     
     this.state = {
       value: 'home',
-      active: 'go'
+      active: 'home'
     }
 
     this.handleChange = (item) => {

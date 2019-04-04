@@ -10,15 +10,20 @@ class Tabs extends React.Component {
     }
 
     this.handleChange = (item) => {
-      const { pos, place } = this.props;
-      // console.log(pos, place)
+      const { place } = this.props;
       const elem = event.target;
       const clientRect = elem.getBoundingClientRect();
-      // console.log(clientRect)
+      
+      Object.defineProperty(clientRect, "bottom", {
+        value: clientRect.top + elem.clientHeight,
+        writable: true
+      });
+
       this.setState({
          style: {
            width: elem.clientWidth,
-           left: clientRect.left
+           left: clientRect.left,
+           top: clientRect[place]
           } 
         })
       const { handleChange } = this.props;
@@ -40,6 +45,10 @@ class Tabs extends React.Component {
         {item}
       </div>
     )
+  }
+
+  componentDidMount(){
+    // this.handleChange()
   }
   
   render() {
